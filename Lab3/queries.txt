@@ -1,0 +1,51 @@
+Welcome to SWI-Prolog (threaded, 64 bits, version 10.0.2)
+SWI-Prolog comes with ABSOLUTELY NO WARRANTY. This is free software.
+Please run ?- license. for legal details.
+
+For online help and background, visit https://www.swi-prolog.org
+For built-in help, use ?- help(Topic). or ?- apropos(Word).
+
+8 ?- consult(['c:/Users/lama/OneDrive - IMAM ABDULRAHMAN BIN FAISAL UNIVERSITY/Desktop/reem.pl']).
+true.
+
+9 ?- father(ghanem, reem).
+true.
+
+10 ?- father(hanan, reem).
+false.
+
+11 ?- father(X, khalid).
+X = ghanem .
+
+12 ?- father(abdullah, reema).
+true.
+
+13 ?- mother(hanan, muhrah).
+true.
+
+14 ?- mother(ghanem, abdullah).
+false.
+
+15 ?- mother(X, reem).
+X = hanan.
+
+16 ?- mother(X, reema).
+false.
+
+17 ?- sister(muhrah, reem).
+true .
+
+18 ?- sister(reem, mohammed).
+true .
+
+19 ?- sister(abdullah, reem).
+false.
+
+20 ?- brother(khalid, reem).
+true .
+
+21 ?- brother(mohammed, abdullah).
+true .
+
+22 ?- brother(muhrah, khalid).
+false.
