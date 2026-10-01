@@ -1,0 +1,45 @@
+name: reem alrumaihi
+id: 2230001686
+
+?- house = house.
+true.
+% Both sides are the same atom, so they unify.
+
+?- house = abc.
+false.
+% house and abc are different atoms, so they cannot unify.
+
+?- edge(a,b) = edge(C,b).
+C = a.
+% Same functor and arity. C is a variable, so it takes the value a; b matches b.
+
+?- edge(a,d) = edge(C,B).
+C = a,
+B = d.
+% Same functor and arity; both variables get values: C = a, B = d.
+
+?- edge(C,B) = edge(a,d).
+C = a,
+B = d.
+% Same as before; unification works the same whichever side the variables are on.
+
+?- edge(A,f(g,h)) = edge(a,B).
+A = a,
+B = f(g, h).
+% A takes a, and B takes the whole term f(g,h).
+
+?- edge(A,A) = edge(b,c).
+false.
+% A must have the same value in both places, but b and c are different.
+
+?- edge(A,A) = edge(b,b).
+A = b.
+% A = b in both places, so it works.
+
+?- A = B, B = f.
+A = B, B = f.
+% A and B are linked, then B becomes f, so A is also f.
+
+?- A = B, B = f, A = e.
+false.
+% A and B are both f, so A cannot also be e.

@@ -1,0 +1,33 @@
+name: reem alrumaihi
+id: 2230001686
+
+?- consult('family.pl').
+true.
+
+% 1. Names of all females
+?- female(X).
+X = sara ;
+X = nora.
+
+% 2. Is there any male?
+?- male(_).
+true.
+
+% 3. Grandparent of Faisal
+?- parent(G, P), parent(P, faisal).
+G = ali,
+P = muhammad.
+
+% 4. All daughters of Ahmad
+?- parent(ahmad, D), female(D).
+D = sara ;
+D = nora.
+
+% 5. Do Ahmad and Muhammad have a common parent?
+?- parent(P, ahmad), parent(P, muhammad).
+P = ali.
+
+% 6. Is Khan the brother of Nora?
+?- male(khan), parent(P, khan), parent(P, nora).
+P = ahmad.
+% true: Khan is male and shares the parent Ahmad with Nora.
