@@ -1,0 +1,193 @@
+
+% ========================================
+% Lab 9 - IO Stream and Database
+% Name Game Activity
+% ========================================
+
+:- dynamic current_letters/1.
+
+
+% Start the game
+start :-
+    retractall(current_letters(_)),
+    assertz(current_letters([a,b,c])),
+    nl,
+    write('Hi. This is the Name Game.'), nl,
+    write('Create your name using letters.'), nl,
+    menu.
+
+
+% Display the menu
+menu :-
+    nl,
+    write('Choose from the following:'), nl,
+    write('1- Display the current set of letters'), nl,
+    write('2- Add a letter'), nl,
+    write('3- Add a letter at the top'), nl,
+    write('4- Add a letter at the bottom'), nl,
+    write('5- Delete a letter'), nl,
+    write('6- Delete all letters'), nl,
+    write('7- Exit'), nl,
+    write('Enter your choice: '),
+    read(Choice),
+    handle_choice(Choice).
+
+
+% Option 1: Display letters
+handle_choice(1) :-
+    !,
+    current_letters(List),
+    write('Current letters: '),
+    write(List), nl,
+    atomic_list_concat(List, '', Name),
+    write('Current name: '),
+    write(Name), nl,
+    menu.
+
+
+% Option 2: Add a letter at a chosen position
+handle_choice(2) :-
+    !,
+    read_letter(Letter),
+    write('Enter position (1 is first): '),
+    read(Position),
+    current_letters(List),
+    length(List, Length),
+    Max is Length + 1,
+    ( integer(Position),
+      Position >= 1,
+      Position =< Max ->
+        Index is Position - 1,
+        length(Front, Index),
+        append(Front, Back, List),
+        append(Front, [Letter|Back], NewList),
+        set_letters(NewList),
+        write('Letter added.'), nl
+    ;
+        write('Invalid position.'), nl
+    ),
+    menu.
+
+
+% Option 3: Add at the top
+handle_choice(3) :-
+    !,
+    read_letter(Letter),
+    current_letters(List),
+    set_letters([Letter|List]),
+    write('Letter added at the top.'), nl,
+    menu.
+
+
+% Option 4: Add at the bottom
+handle_choice(4) :-
+    !,
+    read_letter(Letter),
+    current_letters(List),
+    append(List, [Letter], NewList),
+    set_letters(NewList),
+    write('Letter added at the bottom.'), nl,
+    menu.
+
+
+% Option 5: Delete one letter
+handle_choice(5) :-
+    !,
+    read_letter(Letter),
+    current_letters(List),
+    ( selectchk(Letter, List, NewList) ->
+        set_letters(NewList),
+        write('Letter deleted.'), nl
+    ;
+        write('Letter not found.'), nl
+    ),
+    menu.
+
+
+% Option 6: Delete all letters
+handle_choice(6) :-
+    !,
+    set_letters([]),
+    write('All letters deleted.'), nl,
+    menu.
+
+
+% Option 7: Exit
+handle_choice(7) :-
+    !,
+    write('Goodbye!'), nl.
+
+
+% Invalid option
+handle_choice(_) :-
+    write('Invalid choice. Try again.'), nl,
+    menu.
+
+
+% Read one letter
+read_letter(Letter) :-
+    write('Enter a letter: '),
+    read(Input),
+    ( atom(Input),
+      atom_length(Input, 1) ->
+        Letter = Input
+    ;
+        write('Please enter one letter.'), nl,
+        read_letter(Letter)
+    ).
+
+
+% Update the database
+set_letters(NewList) :-
+    retractall(current_letters(_)),
+    assertz(current_letters(NewList)).
+
+
+% ========================================
+% Lab 9 - Expected Results
+% ========================================
+
+% Test 1: Display starting letters
+% ?- start.
+% Enter your choice: 1.
+% Current letters: [a,b,c]
+% Current name: abc
+
+% Test 2: Add a letter at position 2
+% Enter your choice: 2.
+% Enter a letter: d.
+% Enter position (1 is first): 2.
+% Letter added.
+% Current letters after choosing 1: [a,d,b,c]
+
+% Test 3: Add at the top
+% Enter your choice: 3.
+% Enter a letter: e.
+% Letter added at the top.
+% Current letters after choosing 1: [e,a,d,b,c]
+
+% Test 4: Add at the bottom
+% Enter your choice: 4.
+% Enter a letter: f.
+% Letter added at the bottom.
+% Current letters after choosing 1: [e,a,d,b,c,f]
+
+% Test 5: Delete a letter
+% Enter your choice: 5.
+% Enter a letter: d.
+% Letter deleted.
+% Current letters after choosing 1: [e,a,b,c,f]
+
+% Test 6: Delete all letters
+% Enter your choice: 6.
+% All letters deleted.
+% Current letters after choosing 1: []
+
+% Test 7: Exit
+% Enter your choice: 7.
+% Goodbye!
+% true.
+
+% ========================================
+% End of Lab 9
+% ========================================
