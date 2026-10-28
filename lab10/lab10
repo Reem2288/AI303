@@ -1,0 +1,125 @@
+
+% ========================================
+% Session 10 - Prolog Operators Part II
+% ========================================
+
+
+% ----------------------------------------
+% Task 1: Area and Perimeter
+% ----------------------------------------
+
+% Square
+square(Side, Area, Perimeter) :-
+    Area is Side * Side,
+    Perimeter is 4 * Side.
+
+% Rectangle
+rectangle(Width, Height, Area, Perimeter) :-
+    Area is Width * Height,
+    Perimeter is 2 * (Width + Height).
+
+% Triangle
+triangle(Base, Height, A, B, C, Area, Perimeter) :-
+    Area is 0.5 * Base * Height,
+    Perimeter is A + B + C.
+
+
+% ----------------------------------------
+% Task 1: Expected Results
+% ----------------------------------------
+
+% Test 1: Square
+% ?- square(4, Area, Perimeter).
+% Area = 16,
+% Perimeter = 16.
+
+% Test 2: Rectangle
+% ?- rectangle(5, 3, Area, Perimeter).
+% Area = 15,
+% Perimeter = 16.
+
+% Test 3: Triangle
+% ?- triangle(3, 4, 3, 4, 5, Area, Perimeter).
+% Area = 6.0,
+% Perimeter = 12.
+
+
+% ----------------------------------------
+% Task 2: Login System
+% ----------------------------------------
+
+% Dataset: Username and Password
+user_account(ali, pass123).
+user_account(sara, hello456).
+user_account(ahmed, abc123).
+
+% Start login with 3 attempts
+login :-
+    login_attempts(3).
+
+% Check username and password
+login_attempts(Attempts) :-
+    write('Enter username: '),
+    read(Username),
+
+    write('Enter password: '),
+    read(Password),
+
+    ( user_account(Username, Password) ->
+        write('Login Successful'), nl
+
+    ;
+        write('Login Unsuccessful'), nl,
+
+        ( Attempts > 1 ->
+            Remaining is Attempts - 1,
+            login_attempts(Remaining)
+
+        ;
+            write('Sorry, you exceeded the maximum number of attempts, try again later.'),
+            nl
+        )
+    ).
+
+
+% ----------------------------------------
+% Task 2: Expected Results
+% ----------------------------------------
+
+% Test 1: Correct Login
+% ?- login.
+% Enter username: ali.
+% Enter password: pass123.
+% Login Successful
+% true.
+
+
+% Test 2: Incorrect Then Correct Login
+% ?- login.
+% Enter username: ali.
+% Enter password: wrong.
+% Login Unsuccessful
+% Enter username: sara.
+% Enter password: hello456.
+% Login Successful
+% true.
+
+
+% Test 3: Three Incorrect Attempts
+% ?- login.
+% Enter username: ali.
+% Enter password: wrong1.
+% Login Unsuccessful
+% Enter username: ali.
+% Enter password: wrong2.
+% Login Unsuccessful
+% Enter username: ali.
+% Enter password: wrong3.
+% Login Unsuccessful
+% Sorry, you exceeded the maximum number of attempts, try again later.
+% true.
+
+
+% ----------------------------------------
+% End of Session 10 Tasks
+% ----------------------------------------
